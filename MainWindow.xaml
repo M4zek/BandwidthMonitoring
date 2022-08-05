@@ -5,8 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BandwidthMonitoring"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
         
+        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+       
+        Title="Bandwith Monitoring" Height="400" Width="700"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        WindowStyle="None"
+        Background="{x:Null}"
+        ResizeMode="CanMinimize"
+        AllowsTransparency="True">
+
+    <Window.Resources>
+        <Style x:Key="ComboBoxItemContainerStyle1" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+    </Window.Resources>
+
+    <WindowChrome.WindowChrome >
+        <WindowChrome CaptionHeight="50"/>
+    </WindowChrome.WindowChrome>
+
+
+    <Grid>
+        <materialDesign:Card Margin="0" UniformCornerRadius="15" Background="#303030">
+            <StackPanel>
+                <Grid VerticalAlignment="Top" Background="Transparent" Height="Auto">
+                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="20 0 0 0" WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal">
+                        <TextBlock Text="Bandwith Monitoring" Foreground="White" FontSize="15" FontWeight="Bold" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.ColumnSpan="2" WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button  x:Name="MinimizeButton" Margin="5" Width="Auto" Height="Auto">
+                            <Image Source="res\window-minimize.png" Width="24" Height="24"/>
+                        </Button>
+                        <Button x:Name="MaximizeButton" Margin="5" Width="Auto" Height="Auto" IsEnabled="False">
+                            <Image Source="res\window-maximize.png" Width="24" Height="24"/>
+                        </Button>
+                        <Button x:Name="CloseButton" Margin="5" Width="Auto" Height="Auto">
+                            <Image Source="res\window-close.png" Width="24" Height="24"/>
+                        </Button>
+                    </StackPanel>
+
+                    <Border BorderBrush="#505050" Grid.Row="0" Grid.RowSpan="2" BorderThickness="0 0 0 1">
+                        <StackPanel></StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </materialDesign:Card>
     </Grid>
 </Window>
