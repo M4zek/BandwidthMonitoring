@@ -111,7 +111,17 @@
                             />
 
                         <ComboBox 
-                            x:Name="comboBox_Speed" Margin="0 2 5 0"/>
+                            SelectionChanged="comboBox_Speed_change"
+                            x:Name="comboBox_Speed" Margin="0 2 5 0">
+                            <ComboBoxItem Content="Do not turn off"/>
+                            <ComboBoxItem Content="100 kb/s"/>
+                            <ComboBoxItem Content="200 kb/s"/>
+                            <ComboBoxItem Content="300 kb/s"/>
+                            <ComboBoxItem Content="400 kb/s"/>
+                            <ComboBoxItem Content="500 kb/s"/>
+                            <ComboBoxItem Content="750 kb/s"/>
+                            <ComboBoxItem Content="1000 kb/s"/>
+                        </ComboBox>
 
                         <TextBlock
                             Text="Set how long you want the speed to last to trigger the shutdown procedure."
@@ -122,9 +132,20 @@
                             />
 
                         <ComboBox
-                            x:Name="comboBox_TimeToShutDown" Margin="0 2 5 0"/>
+                            SelectionChanged="comboBox_Time_change"
+                            x:Name="comboBox_TimeToShutDown" Margin="0 2 5 0">
+                            <ComboBoxItem Content="Immediately"/>
+                            <ComboBoxItem Content="10 s"/>
+                            <ComboBoxItem Content="15 s"/>
+                            <ComboBoxItem Content="30 s"/>
+                            <ComboBoxItem Content="45 s"/>
+                            <ComboBoxItem Content="60 s"/>
+                            <ComboBoxItem Content="90 s"/>
+                        </ComboBox>
 
-                        <CheckBox Margin="0 15 5 0">
+                        <CheckBox Margin="0 15 5 0"
+                                  Checked="Save_Checked"
+                                  x:Name="comboBox_SaveToFile">
                             <TextBlock 
                                 Text="Save the information about the program's operation to a file"
                                 Foreground="White"
@@ -133,7 +154,9 @@
                                 />
                         </CheckBox>
 
-                        <CheckBox Margin="0 15 5 0">
+                        <CheckBox Margin="0 15 5 0"
+                                  Checked="StayAwake"
+                                  x:Name="comboBox_StayAwake">
                             <TextBlock 
                                 Text="Do not put your computer to sleep"
                                 Foreground="White"
@@ -205,7 +228,7 @@
 
                             <Button 
                                 Style="{StaticResource button_Style}"
-                                x:Name="button_Start"
+                                x:Name="StartButton"
                                 Width="150"
                                 Margin="10 200 10 0" 
                                 HorizontalAlignment="Center" 
@@ -238,7 +261,7 @@
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="Peek Speed" FontSize="12" Foreground="White" />
                                 <TextBlock Text="Average speed" FontSize="12" Foreground="White" Margin="0 5 0 0"/>
-                                <TextBlock Text="Speed below target(time)" FontSize="12" Foreground="White" Margin="0 5 0 0"/>
+                                <TextBlock Text="Speed below target (time)" FontSize="12" Foreground="White" Margin="0 5 0 0"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="1">
