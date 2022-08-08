@@ -8,7 +8,7 @@ namespace BandwidthMonitoring
 {
     public class MyProperties
     {
-        public String tmpName { get; set; }
+        public String cardName { get; set; }
         public bool saveToFile { get; set; }
         public double downloadSpeed { get; set; }
         public double timeToShutDown { get; set; }
@@ -18,12 +18,12 @@ namespace BandwidthMonitoring
             this.downloadSpeed = 0;
             this.timeToShutDown = 0;
             this.saveToFile = false;
-            this.tmpName = "";
+            this.cardName = "";
         }
 
         public String getParameters()
         {
-            return $"MyProperties \nTMPNAME: {tmpName}\nSave? {saveToFile}\nDownload {downloadSpeed}\nTime {timeToShutDown}";
+            return $"MyProperties [ \nTMPNAME: {cardName}\nSave? {saveToFile}\nDownload {downloadSpeed}\nTime {timeToShutDown}]";
         }
     }
 }

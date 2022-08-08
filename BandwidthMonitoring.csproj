@@ -77,7 +77,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="class\Properties.cs" />
+    <Compile Include="class\DownloadMonitoring.cs" />
+    <Compile Include="class\MyPerformaceCounter.cs" />
+    <Compile Include="class\MyProperties.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

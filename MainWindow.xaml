@@ -83,7 +83,9 @@
                             />
 
                         <ComboBox
-                            x:Name="comboBox_NetworkCard" Margin="0 2 5 0"/>
+                            SelectionChanged="comboBox_Card_change"
+                            x:Name="comboBox_NetworkCard" 
+                            Margin="0 2 5 0"/>
 
                         <Button 
                             Style="{StaticResource button_Style}"
@@ -114,6 +116,7 @@
                             SelectionChanged="comboBox_Speed_change"
                             x:Name="comboBox_Speed" Margin="0 2 5 0">
                             <ComboBoxItem Content="Do not turn off"/>
+                            <ComboBoxItem Content="50 kb/s"/>
                             <ComboBoxItem Content="100 kb/s"/>
                             <ComboBoxItem Content="200 kb/s"/>
                             <ComboBoxItem Content="300 kb/s"/>
@@ -207,7 +210,7 @@
                                 ArcThicknessUnit="Pixel"
                                 StartAngle="0"
                                 EndAngle="0"
-                                RenderTransformOrigin="0.5,0.5">
+                                RenderTransformOrigin="0.54,0.55">
 
                                 <ed:Arc.RenderTransform>
                                     <TransformGroup>
@@ -267,7 +270,7 @@
                             <StackPanel Grid.Column="1">
                                 <TextBlock x:Name="text_PeakSpeed" Text="0.0 Mb/s" FontSize="12" Foreground="#888888" FontWeight="Bold"/>
                                 <TextBlock x:Name="text_AverageSpeed" Text="0.0 Mb/s" FontSize="12" Foreground="#888888" Margin="0 5 0 0" FontWeight="Bold"/>
-                                <TextBlock x:Name="text_TimeToShootDown" Text="0 s" FontSize="12" Foreground="#888888" FontWeight="Bold" Margin="0 5 0 0"/>
+                                <TextBlock x:Name="text_TimeToShutDown" Text="0 s" FontSize="12" Foreground="#888888" FontWeight="Bold" Margin="0 5 0 0"/>
                             </StackPanel>
                         </Grid>
 
