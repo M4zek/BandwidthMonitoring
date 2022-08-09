@@ -78,6 +78,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="class\DownloadMonitoring.cs" />
+    <Compile Include="class\KeepAwake.cs" />
     <Compile Include="class\MyPerformaceCounter.cs" />
     <Compile Include="class\MyProperties.cs" />
     <Compile Include="MainWindow.xaml.cs">

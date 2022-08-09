@@ -5,9 +5,6 @@ using System.Windows.Controls;
 
 namespace BandwidthMonitoring
 {
-
-
-
     public partial class MainWindow : Window
     {
 
@@ -95,8 +92,20 @@ namespace BandwidthMonitoring
         {
             ComboBoxItem item = (ComboBoxItem)comboBox_Speed.SelectedItem;
             string sItem = item.Content.ToString();
-            if (sItem.Equals("Do not turn off")) myProperties.downloadSpeed = -1;
-            else myProperties.downloadSpeed = double.Parse(sItem.Split(' ')[0]);
+            if (sItem.Equals("Do not turn off"))
+            {
+                myProperties.downloadSpeed = -1;
+                comboBox_TimeToShutDown.IsEnabled = false;
+                checkBox_SaveToFile.IsEnabled = false;
+                checkBox_StayAwake.IsEnabled = false;
+            }
+            else
+            {
+                comboBox_TimeToShutDown.IsEnabled = true;
+                checkBox_SaveToFile.IsEnabled = true;
+                checkBox_StayAwake.IsEnabled = true;
+                myProperties.downloadSpeed = double.Parse(sItem.Split(' ')[0]);
+            }
         }
 
         // Listening for time to close changes in the combo box 
@@ -116,15 +125,22 @@ namespace BandwidthMonitoring
         // Listening for save to file changes in the check box
         private void Save_Checked(object sender, RoutedEventArgs e)
         {
-            myProperties.saveToFile = (bool)comboBox_SaveToFile.IsChecked;
+            myProperties.saveToFile = (bool)checkBox_SaveToFile.IsChecked;
         }
 
-        // Listening for changes in the check box
-        private void StayAwake(object sender, RoutedEventArgs e)
+        // Set the computer on keep awake mode
+        private void checkBox_DoNotAllowSleep(object sender, RoutedEventArgs e)
         {
-            // TODO Create a class that implements the process
-            // of keeping a computer in a ready state 
+            KeepAwake.start();
         }
+
+        // Disable keep awake mode
+        private void checkBox_AllowSleep(object sender, RoutedEventArgs e)
+        {
+            KeepAwake.stop();
+        }
+
+
 
         // Handler to update GUI
         private void HandleDataUpdate(object sender, PerformanceEventArgs e)
@@ -137,7 +153,6 @@ namespace BandwidthMonitoring
                 text_TimeToShutDown.Text = e.getTimeToShutDown();
                 text_AverageSpeed.Text = e.getAverageDownload();
 
-                // Test
                 setAngleProgressBar(e.DownloadValue);
             });
         }

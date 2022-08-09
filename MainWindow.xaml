@@ -148,7 +148,7 @@
 
                         <CheckBox Margin="0 15 5 0"
                                   Checked="Save_Checked"
-                                  x:Name="comboBox_SaveToFile">
+                                  x:Name="checkBox_SaveToFile">
                             <TextBlock 
                                 Text="Save the information about the program's operation to a file"
                                 Foreground="White"
@@ -158,8 +158,9 @@
                         </CheckBox>
 
                         <CheckBox Margin="0 15 5 0"
-                                  Checked="StayAwake"
-                                  x:Name="comboBox_StayAwake">
+                                  Checked="checkBox_DoNotAllowSleep"
+                                  Unchecked="checkBox_AllowSleep"
+                                  x:Name="checkBox_StayAwake">
                             <TextBlock 
                                 Text="Do not put your computer to sleep"
                                 Foreground="White"

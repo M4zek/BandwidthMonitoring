@@ -24,6 +24,7 @@
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#25FFFFFF"/>
                 </Trigger>
+                
                 <Trigger Property="IsEnabled" Value="false">
                     <Setter Property="Opacity" Value="0.25"/>
                 </Trigger>
@@ -31,7 +32,6 @@
                 <Trigger Property="IsMouseCaptured" Value="True">
                     <Setter Property="Background" Value="Red"/>
                 </Trigger>
-
             </Style.Triggers>
         </Style>
         <Style x:Key="ComboBoxItemContainerStyle1" TargetType="{x:Type ComboBoxItem}">
