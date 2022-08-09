@@ -15,10 +15,19 @@ namespace BandwidthMonitoring
         public MainWindow()
         {
             InitializeComponent();
+            InitFolders();
             InitWindowButton();
             InitStartButton();
             InitClasses();
             InitComboBoxs();
+        }
+
+        private void InitFolders()
+        {
+            if (!System.IO.Directory.Exists("Saved_Info"))
+            {
+                System.IO.Directory.CreateDirectory("Saved_Info");
+            }
         }
 
         private void InitClasses()
@@ -51,7 +60,7 @@ namespace BandwidthMonitoring
         {
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
             MaximizeButton.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-            CloseButton.Click += (s, e) => Close();
+            CloseButton.Click += (s, e) => { stopMonitoring(); Close(); };
         }
 
         // Init start button to test 
@@ -96,14 +105,10 @@ namespace BandwidthMonitoring
             {
                 myProperties.downloadSpeed = -1;
                 comboBox_TimeToShutDown.IsEnabled = false;
-                checkBox_SaveToFile.IsEnabled = false;
-                checkBox_StayAwake.IsEnabled = false;
             }
             else
             {
                 comboBox_TimeToShutDown.IsEnabled = true;
-                checkBox_SaveToFile.IsEnabled = true;
-                checkBox_StayAwake.IsEnabled = true;
                 myProperties.downloadSpeed = double.Parse(sItem.Split(' ')[0]);
             }
         }
@@ -139,8 +144,6 @@ namespace BandwidthMonitoring
         {
             KeepAwake.stop();
         }
-
-
 
         // Handler to update GUI
         private void HandleDataUpdate(object sender, PerformanceEventArgs e)

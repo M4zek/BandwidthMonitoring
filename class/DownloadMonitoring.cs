@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,6 +18,8 @@ namespace BandwidthMonitoring
         private PerformanceEventArgs performanceArgs;
         public MyProperties myProperties;
         private MyPerformaceCounter myPerformaceCounter;
+        private DateTime startMonitoringTime;
+
 
         private Thread downloadMonitoring;
 
@@ -27,6 +30,9 @@ namespace BandwidthMonitoring
             performanceArgs = new PerformanceEventArgs();
         }
 
+        /////////////////////////////
+        ////// METHODS
+        ////////////////////////////
 
         public void start()
         {
@@ -40,6 +46,7 @@ namespace BandwidthMonitoring
             if(downloadMonitoring != null)
             {
                 downloadMonitoring.Abort();
+                saveInfoToFile();
             }
         }
 
@@ -47,6 +54,7 @@ namespace BandwidthMonitoring
         // based on it, starts the corresponding monitoring method 
         private void selectMonitoringType()
         {
+            startMonitoringTime = DateTime.Now;
             if (myProperties.downloadSpeed == -1)
                 infinityMonitoring();
             else
@@ -70,6 +78,33 @@ namespace BandwidthMonitoring
             process.CreateNoWindow = true;
             process.UseShellExecute = false;
             Process.Start(process);
+        }
+
+        private void saveInfoToFile()
+        {
+            if (myProperties.saveToFile)
+            {
+                DateTime endMonitoringTime = DateTime.Now;
+                TimeSpan time = endMonitoringTime - startMonitoringTime;
+
+                string fileName = $"Saved_Info/Monitoring ({startMonitoringTime.Day}{startMonitoringTime.Month}{startMonitoringTime.Year} {startMonitoringTime.Hour}{startMonitoringTime.Minute}).txt";
+
+                using (StreamWriter outFile = new StreamWriter(fileName))
+                {
+                    outFile.WriteLine( "---------------------------------------------------------------------------");
+                    outFile.WriteLine( "-------------------------------- DATA FILE --------------------------------");
+                    outFile.WriteLine( "---------------------------------------------------------------------------");
+                    outFile.WriteLine($"| Program Start Date: {startMonitoringTime}");
+                    outFile.WriteLine($"| Program End Date: {endMonitoringTime}");
+                    outFile.WriteLine($"| Program Runtime: {time.Hours}h {time.Minutes}m {time.Seconds}s");
+                    outFile.WriteLine($"| Peak Download: {performanceArgs.getPeakBandwith()}");
+                    outFile.WriteLine($"| Average Download: {performanceArgs.getAverageDownload()}");
+                    outFile.WriteLine($"| Number of samples: {performanceArgs.numberOfSampels}");
+                    outFile.WriteLine($"| Total kbps downloaded: {performanceArgs.totalBytes}");
+                    outFile.WriteLine("---------------------------------------------------------------------------");
+                    outFile.WriteLine("---------------------------------------------------------------------------");
+                }
+            }
         }
 
         ////////////////////////
@@ -119,7 +154,6 @@ namespace BandwidthMonitoring
                 OnAverageDownloadUpload(currentDownload);
                 OnDownloadValueUpdate(currentDownload.ToString());
                 currentDownload = myPerformaceCounter.getDownloadValue();
-
                 Thread.Sleep(1000);
             }
             shutDownComputer();
