@@ -10,8 +10,6 @@ namespace BandwidthMonitoring
 
         private MyProperties myProperties;
         private DownloadMonitoring downloadMonitoring;
-
-
         public MainWindow()
         {
             InitializeComponent();
@@ -84,6 +82,11 @@ namespace BandwidthMonitoring
             text_ButtonStart.Text = "Start";
             text_Information.Text = "";
             text_CurrentDownload.Text = "0.0\nKb/s";
+            text_PeakSpeed.Text = "0.0 Kb/s";
+            text_TimeToShutDown.Text = "0 s";
+            text_AverageSpeed.Text = "0.0 Kb/s";
+            progressBar.EndAngle = 0;
+            text_PeakSpeedUnderProgressBar.Text = "0.0\nKb/s";
         }
 
         // The method that realizes the start of network
@@ -155,25 +158,9 @@ namespace BandwidthMonitoring
                 text_Information.Text = e.getInformation();
                 text_TimeToShutDown.Text = e.getTimeToShutDown();
                 text_AverageSpeed.Text = e.getAverageDownload();
-
-                setAngleProgressBar(e.DownloadValue);
+                progressBar.EndAngle = e.getAngle();
+                text_PeakSpeedUnderProgressBar.Text = e.getPeakBandwith().Replace(" ", "\n");
             });
-        }
-
-
-        // TODO Create a animation of progress bar angle 
-        // TEST Temporary set angle!
-        private void setAngleProgressBar(string value)
-        {
-            double d = 0.0;
-            int angle = 0;
-            if (value != null)
-            {
-                d = double.Parse(value);
-                angle = (int)(d * 0.015);
-                if (angle > 230) progressBar.EndAngle = 230;
-                else progressBar.EndAngle = angle;
-            }
         }
     }
 }

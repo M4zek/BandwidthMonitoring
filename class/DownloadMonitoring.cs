@@ -50,6 +50,10 @@ namespace BandwidthMonitoring
             }
         }
 
+
+
+
+
         // A method that checks the data set by the user and,
         // based on it, starts the corresponding monitoring method 
         private void selectMonitoringType()
@@ -247,7 +251,6 @@ namespace BandwidthMonitoring
                 handler(this, performanceArgs);
             }
         }
-
     }
 
 
@@ -262,9 +265,16 @@ namespace BandwidthMonitoring
         public double AverageDownload { get; set; }
         public double totalBytes { get; set; }
         public ulong numberOfSampels { get; set; }
+        
 
-        
-        
+
+        public PerformanceEventArgs()
+        {
+            this.DownloadValue = "0.0";
+            this.PeakBandwidth = "0.0";
+        }
+
+
         // A method that returns the current bandwidth value in megabytes or kilobytes
         // as a string so that it can be displayed in the GUI
         public string getDownloadValue()
@@ -300,12 +310,17 @@ namespace BandwidthMonitoring
             return $"{TimeToShutDown} sec";
         }
 
+
         public String getAverageDownload()
         {
             AverageDownload = totalBytes / numberOfSampels;
             return convertToMbOrKb(AverageDownload).Replace("\n", " ");
         }
 
+        public double getAngle()
+        {
+            return  230 * (double.Parse(DownloadValue) / double.Parse(PeakBandwidth));
+        }
 
 
         //////////////////////
