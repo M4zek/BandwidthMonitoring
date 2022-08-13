@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -74,19 +76,52 @@ namespace BandwidthMonitoring
         }
 
 
+        private void buttonTestCard(object sender, EventArgs e)
+        {
+            MyPerformaceCounter myPerformace = new MyPerformaceCounter((string)comboBox_NetworkCard.SelectedItem);
+
+            MessageBox.Show($"Testing {(string)comboBox_NetworkCard.SelectedItem} has begun. Wait about 10 seconds for the result!", "Information");
+
+            Thread thread = new Thread(()=>
+            {
+                double downloadCount = 0.0;
+                
+                for(int i = 0; i < 10; i++)
+                {
+                    Action action = new Action(() => downloadCount += myPerformace.getDownloadValue());
+                    Dispatcher.BeginInvoke(action);
+                    Thread.Sleep(1000);
+                }
+
+                String msg = "";
+
+                if (downloadCount > 10.0) msg = "The test was successful. It looks like the card is being used!";
+                else msg = "The test went negative. The card is not used! Try using another one from the list.";
+
+                Action ness = new Action(()=> MessageBox.Show(msg,"Result"));
+                Dispatcher.BeginInvoke(ness);
+            });
+
+            thread.Start();
+        }
+
+
         // The method that realizes the stop of network
         // monitoring and sets the GUI.
         private void stopMonitoring()
         {
-            downloadMonitoring.stop();
-            text_ButtonStart.Text = "Start";
-            text_Information.Text = "";
-            text_CurrentDownload.Text = "0.0\nKb/s";
-            text_PeakSpeed.Text = "0.0 Kb/s";
-            text_TimeToShutDown.Text = "0 s";
-            text_AverageSpeed.Text = "0.0 Kb/s";
-            progressBar.EndAngle = 0;
-            text_PeakSpeedUnderProgressBar.Text = "0.0\nKb/s";
+            if (downloadMonitoring != null)
+            {
+                downloadMonitoring.stop();
+                text_ButtonStart.Text = "Start";
+                text_Information.Text = "";
+                text_CurrentDownload.Text = "0.0\nKb/s";
+                text_PeakSpeed.Text = "0.0 Kb/s";
+                text_TimeToShutDown.Text = "0 s";
+                text_AverageSpeed.Text = "0.0 Kb/s";
+                text_PeakSpeedUnderProgressBar.Text = "0.0\nKb/s";
+                changeAngle(0.0);
+            }
         }
 
         // The method that realizes the start of network
@@ -148,6 +183,42 @@ namespace BandwidthMonitoring
             KeepAwake.stop();
         }
 
+        // Animation and change angle of progress bar 
+        private void changeAngle(double newAngle)
+        {
+            double oldAngle = progressBar.EndAngle;
+
+            double difference = Math.Abs(oldAngle - newAngle); 
+            if (difference < 1) return;
+
+            int time = (int)(1 * (230 / difference));  
+            if (time < 0) return;
+
+
+            Task task = new Task(() =>
+            {
+                if (oldAngle > newAngle)
+                {
+                    for (double i = oldAngle; i > newAngle; i--)
+                    {
+                        Action action = new Action(() => progressBar.EndAngle = i);
+                        Dispatcher.BeginInvoke(action);
+                        Thread.Sleep(time);
+                    }
+                } else
+                {
+                    for (double i = oldAngle; i < newAngle; i++)
+                    {
+                        Action action = new Action(() => progressBar.EndAngle = i);
+                        Dispatcher.BeginInvoke(action);
+                        Thread.Sleep(time);
+                    }
+                }
+            });
+            task.Start();
+        }
+        
+
         // Handler to update GUI
         private void HandleDataUpdate(object sender, PerformanceEventArgs e)
         {
@@ -158,7 +229,7 @@ namespace BandwidthMonitoring
                 text_Information.Text = e.getInformation();
                 text_TimeToShutDown.Text = e.getTimeToShutDown();
                 text_AverageSpeed.Text = e.getAverageDownload();
-                progressBar.EndAngle = e.getAngle();
+                changeAngle(e.getAngle());
                 text_PeakSpeedUnderProgressBar.Text = e.getPeakBandwith().Replace(" ", "\n");
             });
         }

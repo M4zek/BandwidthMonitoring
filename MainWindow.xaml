@@ -90,6 +90,7 @@
                         <Button 
                             Style="{StaticResource button_Style}"
                             x:Name="button_TestConnection"
+                            Click="buttonTestCard"
                             Margin="0 10 5 0">
                             <TextBlock 
                                 Text="Test Connection" 

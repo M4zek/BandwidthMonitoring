@@ -52,8 +52,6 @@ namespace BandwidthMonitoring
 
 
 
-
-
         // A method that checks the data set by the user and,
         // based on it, starts the corresponding monitoring method 
         private void selectMonitoringType()
@@ -272,6 +270,7 @@ namespace BandwidthMonitoring
         {
             this.DownloadValue = "0.0";
             this.PeakBandwidth = "0.0";
+            this.TimeToShutDown = "0";
         }
 
 
@@ -317,11 +316,11 @@ namespace BandwidthMonitoring
             return convertToMbOrKb(AverageDownload).Replace("\n", " ");
         }
 
+        // Returns the angle that will be used to set in progressBar on gui.
         public double getAngle()
         {
             return  230 * (double.Parse(DownloadValue) / double.Parse(PeakBandwidth));
         }
-
 
         //////////////////////
         /// METHODS
