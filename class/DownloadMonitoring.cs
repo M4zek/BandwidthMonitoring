@@ -117,7 +117,6 @@ namespace BandwidthMonitoring
         {
             double previousDownloadPeak = 0.0;
             double currentDownload = myPerformaceCounter.getDownloadValue();
-
             OnTimeToShutDownUpdate("NaN");
 
             while (true)
@@ -130,8 +129,6 @@ namespace BandwidthMonitoring
 
                 OnAverageDownloadUpload(currentDownload);
                 OnDownloadValueUpdate(currentDownload.ToString());
-
-/*                updateAngle();*/
 
                 currentDownload = myPerformaceCounter.getDownloadValue();
                 Thread.Sleep(1000);

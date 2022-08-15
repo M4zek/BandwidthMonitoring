@@ -113,7 +113,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="screenshot\app_screenshot.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="res\window-close.png" />
     <Resource Include="res\window-maximize.png" />
