@@ -20,7 +20,6 @@ namespace BandwidthMonitoring
         private MyPerformaceCounter myPerformaceCounter;
         private DateTime startMonitoringTime;
 
-
         private Thread downloadMonitoring;
 
         // Constructor
@@ -33,7 +32,6 @@ namespace BandwidthMonitoring
         /////////////////////////////
         ////// METHODS
         ////////////////////////////
-
         public void start()
         {
             myPerformaceCounter = new MyPerformaceCounter(myProperties.cardName);
@@ -72,7 +70,7 @@ namespace BandwidthMonitoring
         {
             for (int i = 10; i >= 0; i--)
             {
-                OnInformationUpdate($"Komputer zostanie wyłączony za {i} sekund");
+                OnInformationUpdate($"The computer will be turned off in {i} seconds!");
                 Thread.Sleep(1000);
             }
 
@@ -89,7 +87,8 @@ namespace BandwidthMonitoring
                 DateTime endMonitoringTime = DateTime.Now;
                 TimeSpan time = endMonitoringTime - startMonitoringTime;
 
-                string fileName = $"Saved_Info/Monitoring ({startMonitoringTime.Day}{startMonitoringTime.Month}{startMonitoringTime.Year} {startMonitoringTime.Hour}{startMonitoringTime.Minute}).txt";
+                string fileName = $"Saved_Info/Monitoring ({startMonitoringTime.Day}{startMonitoringTime.Month}{startMonitoringTime.Year} " +
+                    $"{startMonitoringTime.Hour}{startMonitoringTime.Minute}).txt";
 
                 using (StreamWriter outFile = new StreamWriter(fileName))
                 {
@@ -112,13 +111,13 @@ namespace BandwidthMonitoring
         ////////////////////////
         /// Monitoring method
         ////////////////////////
-        
 
         // Method monitoring bandwith until click stop button or close application
         private void infinityMonitoring()
         {
             double previousDownloadPeak = 0.0;
             double currentDownload = myPerformaceCounter.getDownloadValue();
+
             OnTimeToShutDownUpdate("NaN");
 
             while (true)
@@ -131,6 +130,8 @@ namespace BandwidthMonitoring
 
                 OnAverageDownloadUpload(currentDownload);
                 OnDownloadValueUpdate(currentDownload.ToString());
+
+/*                updateAngle();*/
 
                 currentDownload = myPerformaceCounter.getDownloadValue();
                 Thread.Sleep(1000);
@@ -194,7 +195,6 @@ namespace BandwidthMonitoring
        ///////////////////////
        // Update data method 
        ///////////////////////
-
         // Update download value in args class 
         private void OnDownloadValueUpdate(string value)
         {
@@ -258,8 +258,6 @@ namespace BandwidthMonitoring
         public string PeakBandwidth { get; set; }
         public string Information { get; set; }
         public string TimeToShutDown { get; set; }
-
-
         public double AverageDownload { get; set; }
         public double totalBytes { get; set; }
         public ulong numberOfSampels { get; set; }
@@ -269,8 +267,9 @@ namespace BandwidthMonitoring
         public PerformanceEventArgs()
         {
             this.DownloadValue = "0.0";
-            this.PeakBandwidth = "0.0";
+            this.PeakBandwidth = "1.0";
             this.TimeToShutDown = "0";
+
         }
 
 
@@ -319,21 +318,22 @@ namespace BandwidthMonitoring
         // Returns the angle that will be used to set in progressBar on gui.
         public double getAngle()
         {
-            return  230 * (double.Parse(DownloadValue) / double.Parse(PeakBandwidth));
+            return 230 * (double.Parse(DownloadValue) / double.Parse(PeakBandwidth));
         }
+
 
         //////////////////////
         /// METHODS
         ////////////////////// 
-        
+
         // A method that returns a string based on the highest value
         // recorded during monitoring. The value can be in kilobytes or megabytes
         // depending on the value passed as the value parameter
         public string convertToMbOrKb(double value)
         {
             if (value >= 1024)
-                return $"{Math.Round(value / 1024, 2)}\nMb/s";
-            return $"{Math.Round(value, 2)}\nKb/s";
+                return $"{Math.Round(value / 1024, 2)}\nMbps";
+            return $"{Math.Round(value, 2)}\nKbps";
         }
     }
 

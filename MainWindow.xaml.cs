@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Expression.Shapes;
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace BandwidthMonitoring
 {
@@ -12,6 +14,7 @@ namespace BandwidthMonitoring
 
         private MyProperties myProperties;
         private DownloadMonitoring downloadMonitoring;
+        private Storyboard storyboard;
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +36,7 @@ namespace BandwidthMonitoring
         private void InitClasses()
         {
             myProperties = new MyProperties();
+            storyboard = new Storyboard();
         }
 
 
@@ -120,7 +124,10 @@ namespace BandwidthMonitoring
                 text_TimeToShutDown.Text = "0 s";
                 text_AverageSpeed.Text = "0.0 Kb/s";
                 text_PeakSpeedUnderProgressBar.Text = "0.0\nKb/s";
-                changeAngle(0.0);
+                comboBox_NetworkCard.IsEnabled = true;
+                comboBox_Speed.IsEnabled = true;
+                button_TestCard.IsEnabled = true;
+                aniamationProgressBar(0.0);
             }
         }
 
@@ -131,6 +138,9 @@ namespace BandwidthMonitoring
             downloadMonitoring = new DownloadMonitoring(myProperties);
             downloadMonitoring.DataUpdate += HandleDataUpdate;
             downloadMonitoring.start();
+            comboBox_NetworkCard.IsEnabled = false;
+            comboBox_Speed.IsEnabled = false;
+            button_TestCard.IsEnabled = false;
             text_ButtonStart.Text = "Stop";
         }
 
@@ -183,41 +193,25 @@ namespace BandwidthMonitoring
             KeepAwake.stop();
         }
 
-        // Animation and change angle of progress bar 
-        private void changeAngle(double newAngle)
+        // Animation of progress bar
+        private void aniamationProgressBar(double newAngle)
         {
-            double oldAngle = progressBar.EndAngle;
+            double diference = Math.Abs(progressBar.EndAngle - newAngle);
+            if (diference < 1) return;
 
-            double difference = Math.Abs(oldAngle - newAngle); 
-            if (difference < 1) return;
+            var myDoubleAnimation = new DoubleAnimation();
+            myDoubleAnimation.From = progressBar.EndAngle;
+            myDoubleAnimation.To = newAngle;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(800));
 
-            int time = (int)(1 * (230 / difference));  
-            if (time < 0) return;
 
+            storyboard.Children.Clear();
+            storyboard.Children.Add(myDoubleAnimation);
+            Storyboard.SetTargetName(myDoubleAnimation, progressBar.Name);
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Arc.EndAngleProperty));
 
-            Task task = new Task(() =>
-            {
-                if (oldAngle > newAngle)
-                {
-                    for (double i = oldAngle; i > newAngle; i--)
-                    {
-                        Action action = new Action(() => progressBar.EndAngle = i);
-                        Dispatcher.BeginInvoke(action);
-                        Thread.Sleep(time);
-                    }
-                } else
-                {
-                    for (double i = oldAngle; i < newAngle; i++)
-                    {
-                        Action action = new Action(() => progressBar.EndAngle = i);
-                        Dispatcher.BeginInvoke(action);
-                        Thread.Sleep(time);
-                    }
-                }
-            });
-            task.Start();
+            storyboard.Begin(this);
         }
-        
 
         // Handler to update GUI
         private void HandleDataUpdate(object sender, PerformanceEventArgs e)
@@ -229,8 +223,8 @@ namespace BandwidthMonitoring
                 text_Information.Text = e.getInformation();
                 text_TimeToShutDown.Text = e.getTimeToShutDown();
                 text_AverageSpeed.Text = e.getAverageDownload();
-                changeAngle(e.getAngle());
                 text_PeakSpeedUnderProgressBar.Text = e.getPeakBandwith().Replace(" ", "\n");
+                aniamationProgressBar(e.getAngle());
             });
         }
     }

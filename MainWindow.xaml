@@ -89,7 +89,7 @@
 
                         <Button 
                             Style="{StaticResource button_Style}"
-                            x:Name="button_TestConnection"
+                            x:Name="button_TestCard"
                             Click="buttonTestCard"
                             Margin="0 10 5 0">
                             <TextBlock 
@@ -117,14 +117,14 @@
                             SelectionChanged="comboBox_Speed_change"
                             x:Name="comboBox_Speed" Margin="0 2 5 0">
                             <ComboBoxItem Content="Do not turn off"/>
-                            <ComboBoxItem Content="50 kb/s"/>
-                            <ComboBoxItem Content="100 kb/s"/>
-                            <ComboBoxItem Content="200 kb/s"/>
-                            <ComboBoxItem Content="300 kb/s"/>
-                            <ComboBoxItem Content="400 kb/s"/>
-                            <ComboBoxItem Content="500 kb/s"/>
-                            <ComboBoxItem Content="750 kb/s"/>
-                            <ComboBoxItem Content="1000 kb/s"/>
+                            <ComboBoxItem Content="50 Kbps"/>
+                            <ComboBoxItem Content="100 Kbps"/>
+                            <ComboBoxItem Content="200 Kbps"/>
+                            <ComboBoxItem Content="300 Kbps"/>
+                            <ComboBoxItem Content="400 Kbps"/>
+                            <ComboBoxItem Content="500 Kbps"/>
+                            <ComboBoxItem Content="750 Kbps"/>
+                            <ComboBoxItem Content="1000 Kbps"/>
                         </ComboBox>
 
                         <TextBlock
@@ -189,7 +189,7 @@
                             <ed:Arc 
                                 Fill="#3F3F3F"
                                 Height="300" Width="300" Stretch="None"
-                                ArcThickness="15"
+                                ArcThickness="20"
                                 ArcThicknessUnit="Pixel"
                                 StartAngle="0"
                                 EndAngle="230"
@@ -208,7 +208,7 @@
                                 x:Name="progressBar"
                                 Fill="HotPink"
                                 Height="300" Width="300" Stretch="None"
-                                ArcThickness="15"
+                                ArcThickness="20"
                                 ArcThicknessUnit="Pixel"
                                 StartAngle="0"
                                 EndAngle="0"
@@ -225,7 +225,7 @@
                             </ed:Arc>
 
                             <TextBlock
-                                Text="0.0&#10;Kb/s"
+                                Text="0.0&#10;Kbps"
                                 TextAlignment="Center"
                                 VerticalAlignment="Bottom"
                                 HorizontalAlignment="Left"
@@ -236,7 +236,7 @@
 
                             <TextBlock
                                 x:Name="text_PeakSpeedUnderProgressBar"
-                                Text="0.0&#10;Kb/s"
+                                Text="0.0&#10;Kbps"
                                 TextAlignment="Center"
                                 VerticalAlignment="Bottom"
                                 HorizontalAlignment="Right"
@@ -267,9 +267,9 @@
 
 
                             <TextBlock 
-                                x:Name="text_Information"  Margin="0 0 0 10"
+                                x:Name="text_Information"  Margin="0 0 0 0"
                                 VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                                Foreground="Orange" FontSize="15" />
+                                Foreground="Orange" FontSize="12" />
                         </Grid>
                         <!-- ========================================== -->
 
@@ -284,6 +284,7 @@
                                 <ColumnDefinition Width="0.4*"/>
                                 <ColumnDefinition Width="0.7*"/>
                             </Grid.ColumnDefinitions>
+                            
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="Peek Speed" FontSize="12" Foreground="White" />
                                 <TextBlock Text="Average speed" FontSize="12" Foreground="White" Margin="0 5 0 0"/>
@@ -291,8 +292,8 @@
                             </StackPanel>
 
                             <StackPanel Grid.Column="1">
-                                <TextBlock x:Name="text_PeakSpeed" Text="0.0 Mb/s" FontSize="12" Foreground="#888888" FontWeight="Bold"/>
-                                <TextBlock x:Name="text_AverageSpeed" Text="0.0 Mb/s" FontSize="12" Foreground="#888888" Margin="0 5 0 0" FontWeight="Bold"/>
+                                <TextBlock x:Name="text_PeakSpeed" Text="0.0 Kbps" FontSize="12" Foreground="#888888" FontWeight="Bold"/>
+                                <TextBlock x:Name="text_AverageSpeed" Text="0.0 Kbps" FontSize="12" Foreground="#888888" Margin="0 5 0 0" FontWeight="Bold"/>
                                 <TextBlock x:Name="text_TimeToShutDown" Text="0 s" FontSize="12" Foreground="#888888" FontWeight="Bold" Margin="0 5 0 0"/>
                             </StackPanel>
                         </Grid>
